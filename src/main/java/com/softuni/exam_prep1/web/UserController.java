@@ -44,7 +44,7 @@ public class UserController {
     public String registerConfirm(@Valid UserRegisterBindingModel userRegisterBindingModel,
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes) {
-        if(!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())){
+        if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
             redirectAttributes.addFlashAttribute("confirmPassDontMatch", true);
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
@@ -66,8 +66,8 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(Model model){
-        if(!model.containsAttribute("userLoginBindingModel")){
+    public String login(Model model) {
+        if (!model.containsAttribute("userLoginBindingModel")) {
             model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
             model.addAttribute("notFound", false);
         }
@@ -78,8 +78,8 @@ public class UserController {
     public String loginConfirm(@Valid UserLoginBindingModel userLoginBindingModel,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes,
-                               HttpSession httpSession){
-        if(bindingResult.hasErrors()){
+                               HttpSession httpSession) {
+        if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
             return "redirect:login";
@@ -88,7 +88,7 @@ public class UserController {
         UserServiceModel userServiceModel = userService.findByUsername(userLoginBindingModel.getUsername());
 
 
-        if(userServiceModel == null || !passwordEncoder.matches(userLoginBindingModel.getPassword(), userServiceModel.getPassword())){
+        if (userServiceModel == null || !passwordEncoder.matches(userLoginBindingModel.getPassword(), userServiceModel.getPassword())) {
             redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
             redirectAttributes.addFlashAttribute("notFound", true);
             return "redirect:login";
