@@ -1,7 +1,8 @@
 package com.softuni.exam_prep1.web;
 
+import com.softuni.exam_prep1.models.binding.UserLoginBindingModel;
 import com.softuni.exam_prep1.models.binding.UserRegisterBindingModel;
-import com.softuni.exam_prep1.models.service.UserRegServiceModel;
+import com.softuni.exam_prep1.models.service.UserServiceModel;
 import com.softuni.exam_prep1.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -56,7 +58,7 @@ public class UserController {
             return "redirect:register";
         }
 
-        UserRegServiceModel userRegServiceModel = modelMapper.map(userRegisterBindingModel, UserRegServiceModel.class);
+        UserServiceModel userRegServiceModel = modelMapper.map(userRegisterBindingModel, UserServiceModel.class);
         userRegServiceModel.setPassword(passwordEncoder.encode(userRegisterBindingModel.getPassword()));
         userService.registerUser(userRegServiceModel);
 
@@ -64,8 +66,37 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(){
+    public String login(Model model){
+        if(!model.containsAttribute("userLoginBindingModel")){
+            model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
+            model.addAttribute("notFound", false);
+        }
         return "login";
+    }
+
+    @PostMapping("/login")
+    public String loginConfirm(@Valid UserLoginBindingModel userLoginBindingModel,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes,
+                               HttpSession httpSession){
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
+            return "redirect:login";
+        }
+
+        UserServiceModel userServiceModel = userService.findByUsername(userLoginBindingModel.getUsername());
+
+
+        if(userServiceModel == null || !passwordEncoder.matches(userLoginBindingModel.getPassword(), userServiceModel.getPassword())){
+            redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+            redirectAttributes.addFlashAttribute("notFound", true);
+            return "redirect:login";
+        }
+
+        httpSession.setAttribute("user", userServiceModel);
+
+        return "redirect:/";
     }
 
 

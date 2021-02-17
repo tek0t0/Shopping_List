@@ -1,18 +1,18 @@
 package com.softuni.exam_prep1.models.service;
 
-public class UserRegServiceModel {
+public class UserServiceModel {
     private String username;
     private String email;
     private String password;
 
-    public UserRegServiceModel() {
+    public UserServiceModel() {
     }
 
     public String getUsername() {
         return username;
     }
 
-    public UserRegServiceModel setUsername(String username) {
+    public UserServiceModel setUsername(String username) {
         this.username = username;
         return this;
     }
@@ -21,7 +21,7 @@ public class UserRegServiceModel {
         return email;
     }
 
-    public UserRegServiceModel setEmail(String email) {
+    public UserServiceModel setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -30,7 +30,7 @@ public class UserRegServiceModel {
         return password;
     }
 
-    public UserRegServiceModel setPassword(String password) {
+    public UserServiceModel setPassword(String password) {
         this.password = password;
         return this;
     }
