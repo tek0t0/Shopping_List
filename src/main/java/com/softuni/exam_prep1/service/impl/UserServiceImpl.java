@@ -20,9 +20,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean registerUser(UserServiceModel userRegServiceModel) {
-        try{
+        try {
             userRepo.save(modelMapper.map(userRegServiceModel, UserEntity.class));
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceModel findByUsername(String username) {
 
         return userRepo.findByUsername(username)
-                .map(u->modelMapper.map(u, UserServiceModel.class))
+                .map(u -> modelMapper.map(u, UserServiceModel.class))
                 .orElse(null);
 
     }

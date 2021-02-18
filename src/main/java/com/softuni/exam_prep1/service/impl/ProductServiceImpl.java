@@ -35,14 +35,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public BigDecimal getTotalSum() {
         BigDecimal totalProductsSum = productRepo.findTotalProductsSum();
-        return totalProductsSum != null? totalProductsSum : new BigDecimal("0");
+        return totalProductsSum != null ? totalProductsSum : new BigDecimal("0");
     }
 
     @Override
     public List<ProductServiceModel> findAllProductsByCategoryName(CategoryNameEnum categoryNameEnum) {
         return productRepo.findAllByCategory_Name(categoryNameEnum)
                 .stream()
-                .map(p->modelMapper.map(p, ProductServiceModel.class))
+                .map(p -> modelMapper.map(p, ProductServiceModel.class))
                 .collect(Collectors.toList());
     }
 

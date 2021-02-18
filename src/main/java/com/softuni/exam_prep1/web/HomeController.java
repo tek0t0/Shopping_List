@@ -45,7 +45,6 @@ public class HomeController {
                 .map(p -> modelMapper.map(p, ProductViewModel.class))
                 .collect(Collectors.toList()));
 
-
         return "home";
     }
 }

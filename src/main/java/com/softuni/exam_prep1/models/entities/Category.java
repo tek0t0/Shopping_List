@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "categories")
-public class Category extends BaseEntity{
+public class Category extends BaseEntity {
 
     private CategoryNameEnum name;
     private String description;
@@ -14,11 +14,9 @@ public class Category extends BaseEntity{
     public Category() {
     }
 
-
     public Category(CategoryNameEnum name) {
         this.name = name;
     }
-
 
     @Enumerated(value = EnumType.STRING)
     public CategoryNameEnum getName() {

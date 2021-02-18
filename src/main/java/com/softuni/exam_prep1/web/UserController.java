@@ -63,7 +63,7 @@ public class UserController {
         userRegServiceModel.setPassword(passwordEncoder.encode(userRegisterBindingModel.getPassword()));
         boolean isSaved = userService.registerUser(userRegServiceModel);
 
-        if(!isSaved){
+        if (!isSaved) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute("exists", true);
             return "redirect:register";
@@ -111,6 +111,4 @@ public class UserController {
         httpSession.invalidate();
         return "redirect:/";
     }
-
-
 }

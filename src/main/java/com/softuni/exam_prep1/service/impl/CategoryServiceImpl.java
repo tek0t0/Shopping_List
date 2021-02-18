@@ -29,8 +29,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findByName(CategoryNameEnum categoryNameEnum) {
-       return categoryRepo
-               .findByName(categoryNameEnum)
-               .orElse(null);
+        return categoryRepo
+                .findByName(categoryNameEnum)
+                .orElse(null);
     }
 }

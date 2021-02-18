@@ -14,11 +14,6 @@ public class DBInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-            categoryService.initCategories();
-
-
-
-
-
+        categoryService.initCategories();
     }
 }

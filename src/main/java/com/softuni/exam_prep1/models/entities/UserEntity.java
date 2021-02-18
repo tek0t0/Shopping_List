@@ -44,7 +44,6 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-
     @Override
     public String toString() {
         return "UserEntity{" +
