@@ -11,14 +11,15 @@
     <hr class="hr-3 w-25 bg-white"/>
     <form action="/users/register" method="POST" th:object="${userRegisterBindingModel}"
           class="mx-auto w-25 bg-blur rounded">
+        <small th:if="${exists}" class="text-danger">Username or email already exists! </small>
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
                 <label for="username" class="h4 mb-2 text-white">Username</label>
             </div>
             <input th:field="*{username}" th:errorclass="bg-danger" type="text" class="form-control" id="username"
                    name="username"/>
-            <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger">Username error
-                message</small>
+            <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></small>
+<!--            <small th:if="${exists}" class="text-danger">User already exists! </small>-->
         </div>
         <div class="form-group">
             <div class="label-holder text-white textCol d-flex justify-content-center">
@@ -47,6 +48,7 @@
                    id="confirmPassword"
                    name="confirmPassword"/>
             <small th:if="${confirmPassDontMatch}" class="text-danger">Confirm password does not match</small>
+
         </div>
 
         <div class="button-holder d-flex justify-content-center">

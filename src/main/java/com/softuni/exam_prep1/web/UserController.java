@@ -36,6 +36,7 @@ public class UserController {
         if (!model.containsAttribute("userRegisterBindingModel")) {
             model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
             model.addAttribute("confirmPassDontMatch", false);
+            model.addAttribute("exists", false);
         }
         return "register";
     }
@@ -60,7 +61,13 @@ public class UserController {
 
         UserServiceModel userRegServiceModel = modelMapper.map(userRegisterBindingModel, UserServiceModel.class);
         userRegServiceModel.setPassword(passwordEncoder.encode(userRegisterBindingModel.getPassword()));
-        userService.registerUser(userRegServiceModel);
+        boolean isSaved = userService.registerUser(userRegServiceModel);
+
+        if(!isSaved){
+            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
+            redirectAttributes.addFlashAttribute("exists", true);
+            return "redirect:register";
+        }
 
         return "redirect:login";
     }
@@ -96,6 +103,12 @@ public class UserController {
 
         httpSession.setAttribute("user", userServiceModel);
 
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        httpSession.invalidate();
         return "redirect:/";
     }
 

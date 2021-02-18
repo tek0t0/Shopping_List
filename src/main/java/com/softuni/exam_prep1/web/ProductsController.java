@@ -8,10 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -27,8 +29,12 @@ public class ProductsController {
     }
 
     @GetMapping("/add")
-    public String add(Model model){
-        if(!model.containsAttribute("productBindingModel")){
+    public String add(Model model, HttpSession httpSession) {
+        if (httpSession.getAttribute("user") == null) {
+            return "redirect:../users/login";
+        }
+
+        if (!model.containsAttribute("productBindingModel")) {
             model.addAttribute("productBindingModel", new ProductBindingModel());
         }
         return "product-add";
@@ -37,16 +43,28 @@ public class ProductsController {
     @PostMapping("/add")
     public String addConfirm(@Valid ProductBindingModel productBindingModel,
                              BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes){
+                             RedirectAttributes redirectAttributes) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("productBindingModel", productBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.productBindingModel", bindingResult);
             return "redirect:add";
         }
 
-        //ToDo save in DB
         productService.add(modelMapper.map(productBindingModel, ProductServiceModel.class));
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/buy/{id}")
+    public String buyById(@PathVariable String id) {
+        productService.buyById(id);
+        return "redirect:/";
+    }
+
+    @GetMapping("/buy/all")
+    public String buyAll() {
+        productService.buyAll();
 
         return "redirect:/";
     }
